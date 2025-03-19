@@ -47,3 +47,9 @@ variable "public2-azs" {
 variable "route" {
     type = string
 }
+
+variable "env" {}
+
+variable "key_name" {}
+
+variable "node_instance_type" {}

@@ -5,6 +5,8 @@ instance_tenancy = "default"
 
 dns = "true"
 
+env = "dev"
+
 tags = {
     "Name" = "EKS"
     "terraform" = "true"
@@ -25,3 +27,7 @@ route = "0.0.0.0/0"
 from_port = "22"
 
 to_port = "22"
+
+key_name = "devops_mumbai"
+
+node_instance_type = ["t2.medium"]
