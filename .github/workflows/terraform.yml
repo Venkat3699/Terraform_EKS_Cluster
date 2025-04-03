@@ -69,10 +69,13 @@ jobs:
     steps:
       - name: 'Install TFLint'
         run: |
+          mkdir -p $HOME/.local/bin
           curl -sLo tflint.zip https://github.com/terraform-linters/tflint/releases/download/v0.46.1/tflint_linux_amd64.zip
-          unzip tflint.zip -d /usr/local/bin/
+          unzip -o tflint.zip -d $HOME/.local/bin/
+          chmod +x $HOME/.local/bin/tflint
+          echo "$HOME/.local/bin" >> $GITHUB_PATH  # Add to PATH
           tflint --version
-
+      
   tflint-check:
     name: 'Run TFLint'
     runs-on: terraform_runner
@@ -123,7 +126,7 @@ jobs:
   terraform-destroy:
     name: 'Terraform Destroy'
     runs-on: terraform_runner
-    needs: terraform-plan
+    needs: terraform-apply
     if: github.event_name == 'workflow_dispatch'  # Only runs if manually triggered
     steps:
     - name: Terraform Destroy
