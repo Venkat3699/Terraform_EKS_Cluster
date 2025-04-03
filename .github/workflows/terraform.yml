@@ -53,7 +53,7 @@ jobs:
   terraform-validate:
     name: 'Terraform Validate'
     runs-on: terraform_runner
-    needs: terraform-init
+    needs: terraform-fmt
     steps:
       - name: Terraform Validate
         run: terraform validate
@@ -61,7 +61,7 @@ jobs:
   install-tflint:
     name: 'Install TFLint'
     runs-on: terraform_runner
-    needs: terraform-init
+    needs: terraform-validate
     steps:
       - name: 'Install TFLint'
         run: |
@@ -82,7 +82,7 @@ jobs:
   install-tfsec:
     name: 'Install tfsec'
     runs-on: terraform_runner
-    needs: terraform-init
+    needs: tflint-check
     steps:
       - name: 'Install tfsec'
         run: |
@@ -102,7 +102,7 @@ jobs:
   terraform-plan:
     name: 'Terraform Plan'
     runs-on: terraform_runner
-    needs: [terraform-validate, tflint-check, tfsec-check]
+    needs: tfsec-check
     steps:
       - name: 'Terraform Plan'
         run: terraform plan -out=tfplan
