@@ -47,8 +47,12 @@ jobs:
     runs-on: terraform_runner
     needs: terraform-init
     steps:
-      - name: Terraform Format
+      - name: Terraform Format (Auto-fix)
+        run: terraform fmt -recursive
+
+      - name: Terraform Format Check
         run: terraform fmt -check
+
 
   terraform-validate:
     name: 'Terraform Validate'
@@ -115,3 +119,12 @@ jobs:
     steps:
       - name: Terraform Apply
         run: terraform apply -auto-approve tfplan
+
+  terraform-destroy:
+    name: 'Terraform Destroy'
+    runs-on: terraform_runner
+    needs: terraform-plan
+    if: github.event_name == 'workflow_dispatch'  # Only runs if manually triggered
+    steps:
+    - name: Terraform Destroy
+      run: terraform destroy -auto-approve
